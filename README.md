@@ -4,6 +4,8 @@
 
 This is an implementation of an avatar builder created for the BuidlBox Avatar builder challenge. This project provides a user-friendly interface for creating avatars and emits a custom vue component event when the avatar-building process is complete. The emitted event includes a JSON object that contains the user's avatar selections.
 
+A Demo video can be accessed here: https://youtu.be/YbqU0JsEVfo
+
 ## Project Structure
 
 The core functionality of the avatar builder is implemented as a single Vue 3 component, which can be found in the following location:
