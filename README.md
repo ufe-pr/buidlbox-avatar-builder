@@ -1,46 +1,53 @@
 # buidlbox-avatar-builder
 
-This template should help get you started developing with Vue 3 in Vite.
+## Overview
 
-## Recommended IDE Setup
+This is an implementation of an avatar builder created for the BuidlBox Avatar builder challenge. This project provides a user-friendly interface for creating avatars and emits a custom vue component event when the avatar-building process is complete. The emitted event includes a JSON object that contains the user's avatar selections.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+## Project Structure
 
-## Type Support for `.vue` Imports in TS
+The core functionality of the avatar builder is implemented as a single Vue 3 component, which can be found in the following location:
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+```plaintext
+src/App.vue
+```
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+## Usage
 
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+To use the avatar builder, follow the steps below:
 
-## Customize configuration
+1. Clone this repository to your local machine.
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
+2. Navigate to the project directory and install the required dependencies by running the following command:
 
 ```sh
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+3. Once the dependencies are installed, you can start the development server. Use the following command to compile the project and enable hot-reloading for development:
 
 ```sh
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+4. Open your web browser and access the development server at the specified URL.
 
-```sh
-npm run build
-```
+5. Use the user-friendly interface to build your avatar by making selections and customizing the appearance.
 
-### Lint with [ESLint](https://eslint.org/)
+6. When you are satisfied with your avatar and have completed the customization, click the "Finish" button.
+
+7. The component will emit a `built` event, and this event will contain a JSON object with details about the user's selections.
+
+## Additional Tools
+
+For code quality and style enforcement, this project utilizes ESLint. You can lint your code by running the following command:
 
 ```sh
 npm run lint
 ```
+
+## Conclusion
+
+The **buidlbox-avatar-builder** is a versatile Vue 3 component that makes it easy to create avatars with a smooth user experience. If you encounter any issues or have questions about the project, please refer to the documentation, or don't hesitate to reach out to the project maintainers.
+
+Feel free to explore and customize the avatar builder to suit your specific requirements and styling preferences.
