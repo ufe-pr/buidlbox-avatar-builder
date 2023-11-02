@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import AttributeSelection from './components/AttributeSelection.vue'
+import { TabGroup, TabPanels, TabPanel, TabList, Tab } from '@headlessui/vue'
+import BuidlButton from './components/BuidlButton.vue'
+import { ButtonType } from './types/button'
 
-const BASE_SPRITE_DIR = '/sprites/'
+const BASE_SPRITE_DIR = '/sprites256/'
 
 const body_sprites = [
   'body/blue.png',
@@ -112,29 +115,40 @@ const layers = [
   { ref: head, name: 'Head', sprites: head_sprites }
 ]
 
+const emit = defineEmits<{
+  (event: 'built', data: object): void
+}>()
+
 function handleSubmit() {
   function extractFilename(x?: string) {
-    if (!x) return x;
-    const s = x.split(/\\|\//);
-    return s[s.length - 1];
+    if (!x) return x
+    const s = x.split(/\\|\//)
+    return s[s.length - 1]
+  }
+  const data = {
+    body: extractFilename(body.value),
+    face: extractFilename(face.value),
+    head: extractFilename(head.value),
+    clothes: extractFilename(clothes.value),
+    ears: extractFilename(ears.value),
+    eyes: extractFilename(eyes.value)
   }
 
-  const body_ = extractFilename(body.value);
-  const face_ = extractFilename(face.value);
-  const head_ = extractFilename(head.value);
-  const clothes_ = extractFilename(clothes.value);
-  const ears_ = extractFilename(ears.value);
-  const eyes_ = extractFilename(eyes.value);
-
-  console.log(body_, face_, head_, clothes_, ears_, eyes_);
+  console.log('Output data:', data)
+  emit('built', data)
+  alert(JSON.stringify(data))
 }
+
+const selectedIndex = ref(0)
 </script>
 
 <template>
-  <main>
-    <div class="flex w-full max-w-5xl border-x-2">
-      <div class="shrink-0 w-1/2 flex items-center justify-center">
-        <div id="avatar-preview" class="relative">
+  <main class="overflow-x-hidden relative">
+    <div
+      class="flex flex-wrap lg:flex-nowrap gap-4 xl:gap-8 px-4 w-full max-w-7xl mx-auto min-h-screen relative"
+    >
+      <div class="shrink-0 w-full lg:max-w-xs flex flex-col gap-4 items-center lg:mt-16 p-4 lg:p-8">
+        <div id="avatar-preview" class="relative rounded-full bg-surface p-4 h-20 w-20">
           <img
             v-for="({ ref }, index) in layers.filter((x) => x.ref.value)"
             v-bind:key="index"
@@ -142,26 +156,63 @@ function handleSubmit() {
             v-bind:src="ref.value"
           />
         </div>
+        <div>Preview avatar</div>
       </div>
 
-      <div id="customization-panel" class="w-1/2 shrink-0 max-h-screen overflow-y-auto">
-        <AttributeSelection
-          v-for="layer in layers"
-          :key="layer.name"
-          v-model="layer.ref.value"
-          :name="layer.name"
-          :options="layer.sprites.map((x) => ({ name: x ? '' : 'None', sourceUrl: x }))"
-        />
-        <button @click="handleSubmit">Finish</button>
+      <div id="customization-panel" class="flex-grow overflow-x-hidden my-8 lg:my-16">
+        <div class="card">
+          <TabGroup :selected-index="selectedIndex" @change="(index) => (selectedIndex = index)">
+            <TabList class="flex overflow-x-auto gap-4 mb-12">
+              <Tab
+                v-slot="{ selected }"
+                class="relative outline-none box-content hover:text-sm px-8 py-2.5 mb-1.5 transition duration-200 w-full block hover:no-underline text-on-surface-secondary hover:font-medium hover:text-on-surface hover:border-b-2 border-b-[1px] ui-selected:border-secondary border-transparent hover:border-secondary whitespace-nowrap"
+                v-for="{ name } in layers"
+                :key="name"
+              >
+                <span
+                  class=""
+                  :class="{ 'bg-full-gradient text-transparent bg-clip-text': selected }"
+                >
+                  {{ name }}
+                </span>
+              </Tab>
+            </TabList>
+            <TabPanels>
+              <TabPanel v-for="layer in layers" :key="layer.name">
+                <AttributeSelection
+                  v-model="layer.ref.value"
+                  :name="layer.name"
+                  :options="layer.sprites.map((x) => ({ name: x ? '' : 'None', sourceUrl: x }))"
+                />
+              </TabPanel>
+            </TabPanels>
+          </TabGroup>
+          <div class="flex flex-wrap gap-4">
+            <BuidlButton
+              class="w-full md:w-fit"
+              v-if="selectedIndex > 0"
+              @click="selectedIndex--"
+              :button-type="ButtonType.Secondary2"
+              >← {{ layers[selectedIndex - 1].name }}</BuidlButton
+            >
+            <span class="flex-grow"></span>
+            <BuidlButton
+              class="w-full md:w-fit"
+              v-if="selectedIndex < layers.length - 1"
+              @click="selectedIndex++"
+              :button-type="ButtonType.Positive"
+              >{{ layers[selectedIndex + 1].name }} →</BuidlButton
+            >
+            <BuidlButton
+              class="w-full md:w-fit"
+              v-else
+              @click="handleSubmit"
+              :button-type="ButtonType.Positive"
+              >Finish</BuidlButton
+            >
+          </div>
+        </div>
       </div>
     </div>
   </main>
 </template>
-
-<style scoped>
-#avatar-preview {
-  --avatar-size: 8rem;
-  width: var(--avatar-size);
-  height: var(--avatar-size);
-}
-</style>

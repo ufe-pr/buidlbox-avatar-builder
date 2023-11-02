@@ -12,6 +12,8 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@headlessui/tailwindcss": "^0.2.0",
+    "@headlessui/vue": "^1.7.16",
     "vue": "^3.3.4"
   },
   "devDependencies": {
